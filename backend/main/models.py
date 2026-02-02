@@ -26,14 +26,30 @@ class JobPosting(models.Model):
     
     Fields:
         title: Job title (e.g., 'Senior Python Developer')
+        company: Company name (e.g., 'Acme Corp')
         description: Full job description with responsibilities and requirements
         location: Job location (e.g., 'Remote', 'New York, NY')
+        type: Employment type (Full-time, Part-time, Contract, Internship)
         required_skills: Comma-separated list of required skills for skill matching
         created_at: Timestamp when the job was posted
     """
+    
+    JOB_TYPE_CHOICES = [
+        ('Full-time', 'Full-time'),
+        ('Part-time', 'Part-time'),
+        ('Contract', 'Contract'),
+        ('Internship', 'Internship'),
+    ]
+    
     title = models.CharField(max_length=255)
+    company = models.CharField(max_length=255, default='Company Name')
     description = models.TextField()
     location = models.CharField(max_length=255, blank=True)
+    type = models.CharField(
+        max_length=50,
+        choices=JOB_TYPE_CHOICES,
+        default='Full-time'
+    )
     required_skills = models.TextField(
         blank=True,
         help_text="Comma-separated list of required skills (e.g., Python, Django, REST API)"
@@ -46,7 +62,13 @@ class JobPosting(models.Model):
         verbose_name_plural = 'Job Postings'
 
     def __str__(self):
-        return self.title
+        return f"{self.title} at {self.company}"
+    
+    def get_skills_list(self):
+        """Return required skills as a list."""
+        if not self.required_skills:
+            return []
+        return [skill.strip() for skill in self.required_skills.split(',')]
 
 
 class ResumeSubmission(models.Model):

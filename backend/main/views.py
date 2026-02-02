@@ -158,19 +158,32 @@ def list_jobs(request):
                 {
                     "id": 1,
                     "title": "Senior Python Developer",
+                    "company": "TechCorp Inc",
                     "location": "San Francisco, CA",
+                    "type": "Full-time",
                     "description": "Full job description...",
                     "required_skills": "Python, Django, ...",
+                    "skills": ["Python", "Django", ...],  # parsed array
                     "created_at": "2024-01-15T10:30:00Z"
                 },
                 ...
             ]
         }
     """
-    jobs = JobPosting.objects.order_by('-created_at').values(
-        'id', 'title', 'location', 'description', 'required_skills', 'created_at'
-    )
-    return JsonResponse({'jobs': list(jobs)})
+    jobs_data = []
+    for job in JobPosting.objects.order_by('-created_at'):
+        jobs_data.append({
+            'id': job.id,
+            'title': job.title,
+            'company': job.company,
+            'location': job.location,
+            'type': job.type,
+            'description': job.description,
+            'required_skills': job.required_skills,
+            'skills': job.get_skills_list(),  # Array format for frontend
+            'created_at': job.created_at.isoformat()
+        })
+    return JsonResponse({'jobs': jobs_data})
 
 
 @csrf_exempt

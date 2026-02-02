@@ -31,9 +31,10 @@ class JobPostingAdmin(admin.ModelAdmin):
     - Delete job postings
     - Filter and search job postings
     """
-    list_display = ('title', 'location', 'created_at')
-    search_fields = ('title', 'description', 'required_skills')
-    fields = ('title', 'description', 'location', 'required_skills', 'created_at')
+    list_display = ('title', 'company', 'location', 'type', 'created_at')
+    list_filter = ('type', 'location')
+    search_fields = ('title', 'company', 'description', 'required_skills')
+    fields = ('title', 'company', 'location', 'type', 'description', 'required_skills', 'created_at')
     readonly_fields = ('created_at',)
     ordering = ('-created_at',)
 
