@@ -1,0 +1,26 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.swp
+
+# Django
+db.sqlite3
+/staticfiles
+/media/
+backend/main/migrations/
+backend/main/management/
+
+
+# Virtual environment
+backend/venv/
+ENV/
+env/
+.venv/
+
+# Environment variables and config (security - do not commit!)
+main/config.py
+.env
+.env.local
+*.env
